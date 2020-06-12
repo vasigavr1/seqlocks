@@ -13,7 +13,7 @@
 
 
 #define DEBUG_SEQLOCKS 1
-#define THREAD_NUMBER 10 // we want to be able to avoid locking when there is no multithreading
+#define THREAD_NUMBER 10 // we want to be able to avoid locking when there is no multi-threading
 #define ENABLE_LOCK_FREE_READING 1
 #define COMPILER_BARRIER() asm volatile ("" ::: "memory")
 
@@ -45,8 +45,6 @@ static inline void lock_seqlock(seqlock_t *seqlock)
                                                     memory_order_acquire,
                                                     memory_order_acquire)));
   if (DEBUG_SEQLOCKS) assert(is_odd ((uint64_t) atomic_load_explicit (seqlock, memory_order_acquire)));
-
-
 }
 
 static inline void unlock_seqlock(seqlock_t *seqlock)
@@ -74,7 +72,7 @@ static inline uint64_t read_seqlock_lock_free(seqlock_t *seqlock)
   return tmp_lock;
 }
 
-// return true if the check was successful (loop while it returns false!)
+// returns true if the check was successful (loop while it returns false!)
 static inline bool check_seqlock_lock_free(seqlock_t *seqlock,
                                            uint64_t *read_lock)
 {
